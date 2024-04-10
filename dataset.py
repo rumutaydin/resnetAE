@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader, Dataset, TensorDataset
 from torchvision import transforms
 
 class FashionMNISTDataset(Dataset):
-    def __init__(self, csv_file, transform=None):
+    def __init__(self, csv_file, transform):
         self.data = pd.read_csv(csv_file)
         self.labels = self.data.iloc[:, 0].values.astype(np.int64)
         self.images = self.data.iloc[:, 1:].values.astype(np.float32).reshape(-1, 28, 28)
@@ -31,8 +31,7 @@ class FashionMNISTDataset(Dataset):
         image = self.images[idx]
         label = self.labels[idx]
 
-        if self.transform:
-            image = self.transform(image)
+        image = self.transform(image)
 
         sample = {'image': image, 'label': torch.tensor(label)}
         return sample
